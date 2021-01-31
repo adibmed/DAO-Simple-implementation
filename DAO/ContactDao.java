@@ -61,9 +61,7 @@ public class ContactDao implements IServices<Contact> {
     public Optional<Contact> find(String email) {
         Contact contact = new Contact();
         try {
-            preStatement = connect.prepareStatement("select * from contacts where email=?");
-            preStatement.setString(1, email);
-            resultSet = preStatement.executeQuery();
+            resultSet = statement.executeQuery("select * from contacts where email='"+email+"'");
             if(resultSet.next()) {
                 contact.setFirstName(resultSet.getString("first_name"));
                 contact.setLastName(resultSet.getString("last_name"));
@@ -79,15 +77,17 @@ public class ContactDao implements IServices<Contact> {
 
     @Override
     public void update(Contact contact, String email) {
+        System.out.println(contact);
+        String updateQuery = "update contacts set first_name=?, last_name=?, phone=?, email=?, image_url=? where email=?";
         try {
-            preStatement = connect.prepareStatement("update contacts set first_name=?, last_name=?, phone=?, email=?, image_url=? where email=?");
+            preStatement = connect.prepareStatement(updateQuery);
             preStatement.setString(1, contact.getFirstName());
             preStatement.setString(2, contact.getLastName());
             preStatement.setString(3, contact.getPhone());
             preStatement.setString(4, contact.getEmail());
             preStatement.setString(5, contact.getImageUrl());
             preStatement.setString(6, email);
-            preStatement.executeQuery();
+            preStatement.executeUpdate();
         } catch (Exception e)
         {
             System.out.println("Error updating data\n" + e);
