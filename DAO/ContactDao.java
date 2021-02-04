@@ -13,7 +13,6 @@ public class ContactDao implements IServices<Contact> {
     private String dbURL = "jdbc:mysql://localhost:3306/school";
     private String dbUser = "adibe";
     private String dbPwd = "@dmin_2120";
-
     public ContactDao() {
         try {
             Class.forName(dbDriver);
@@ -88,9 +87,11 @@ public class ContactDao implements IServices<Contact> {
             preStatement.setString(5, contact.getImageUrl());
             preStatement.setString(6, email);
             preStatement.executeUpdate();
+
         } catch (Exception e)
         {
             System.out.println("Error updating data\n" + e);
         }
+
     }
 }
