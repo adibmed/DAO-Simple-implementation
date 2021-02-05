@@ -33,7 +33,13 @@ public class mainWindow extends JFrame {
         emailField = new JTextField(10);
 
         // Btns inti
-        addBtn = new JButton("Add");
+
+        Image image = new ImageIcon(this.getClass().getResource("/images/png/add.png")).getImage();
+
+
+
+        addBtn = new JButton();
+        addBtn.setIcon(new ImageIcon(image));
         removeBtn = new JButton("Delete");
         editBtn = new JButton("Edit");
         leftBtn = new JButton("<<");
