@@ -2,6 +2,7 @@ package tps.tp7.views;
 
 import tps.tp5.Contact;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Vector;
@@ -11,6 +12,8 @@ public class mainWindow extends JFrame {
     private JLabel fullNameLabel, telLabel, emailLabel, imageLabel;
     private JTextField fullNameField, telField, emailField;
     private JButton addBtn, removeBtn, editBtn, leftBtn, rightBtn, centerBtn;
+    private Image addIcon, deteteIcon, editIcon, leftIcon, rightIcon, searchIcon;
+    private Image usersImage;
 
     // data
     private Vector<Contact> contacts;
@@ -34,17 +37,32 @@ public class mainWindow extends JFrame {
 
         // Btns inti
 
-        Image image = new ImageIcon(this.getClass().getResource("/images/png/add.png")).getImage();
+//        Image image = new ImageIcon(this.getClass().getResource("add.png")).getImage();
 
-
+        try {
+            deteteIcon = ImageIO.read(getClass().getResource("images/png/delete.png"));
+            addIcon = ImageIO.read(getClass().getResource("images/png/add.png"));
+            editIcon = ImageIO.read(getClass().getResource("images/png/edit.png"));
+            leftIcon = ImageIO.read(getClass().getResource("images/png/left-arrow.png"));
+            rightIcon = ImageIO.read(getClass().getResource("images/png/right-arrow.png"));
+            searchIcon = ImageIO.read(getClass().getResource("images/png/search.png"));
+            usersImage = ImageIO.read(getClass().getResource("image/png/XzA2OTYwNTcuanBn.jpg"));
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
 
         addBtn = new JButton();
-        addBtn.setIcon(new ImageIcon(image));
-        removeBtn = new JButton("Delete");
-        editBtn = new JButton("Edit");
-        leftBtn = new JButton("<<");
-        rightBtn = new JButton(">>");
-        centerBtn = new JButton("Search");
+        addBtn.setIcon(new ImageIcon(addIcon));
+        removeBtn = new JButton();
+        removeBtn.setIcon(new ImageIcon(deteteIcon));
+        editBtn = new JButton();
+        editBtn.setIcon(new ImageIcon(editIcon));
+        leftBtn = new JButton();
+        leftBtn.setIcon(new ImageIcon(leftIcon));
+        rightBtn = new JButton();
+        rightBtn.setIcon(new ImageIcon(rightIcon));
+        centerBtn = new JButton();
+        centerBtn.setIcon(new ImageIcon(searchIcon));
 
         // Add label and fields to left panel
         leftPanel.setLayout(new GridLayout(3, 2));
@@ -69,7 +87,6 @@ public class mainWindow extends JFrame {
         bottomPanel.add(rightBtn);
 
 
-
         this.setLayout(new BorderLayout());
         topPanel = new JPanel();
         topPanel.setLayout(new GridLayout(1, 2));
@@ -78,7 +95,6 @@ public class mainWindow extends JFrame {
 
         this.add(topPanel, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
-
 
 
         this.setTitle("Contacts");
