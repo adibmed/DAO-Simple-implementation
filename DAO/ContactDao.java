@@ -9,10 +9,11 @@ public class ContactDao implements IServices<Contact> {
     private Statement statement = null;
     private ResultSet resultSet = null;
     private PreparedStatement preStatement = null;
-    private String dbDriver = "com.mysql.cj.jdbc.Driver";
-    private String dbURL = "jdbc:mysql://localhost:3306/school";
-    private String dbUser = "adibe";
-    private String dbPwd = "@dmin_2120";
+    private final String dbDriver = "com.mysql.cj.jdbc.Driver";
+    private final String dbURL = "jdbc:mysql://localhost:3306/school";
+    private final String dbUser = "adibe";
+    private final String dbPwd = "@dmin_2120";
+    private final String tableName = "contacts";
     public ContactDao() {
         try {
             Class.forName(dbDriver);
@@ -27,7 +28,7 @@ public class ContactDao implements IServices<Contact> {
     @Override
     public void add(Contact contact) {
         try {
-            preStatement = connect.prepareStatement("INSERT INTO contacts values(?,?,?,?,?)");
+            preStatement = connect.prepareStatement("INSERT INTO "+tableName+" values(?,?,?,?,?)");
             preStatement.setString(1, contact.getFirstName());
             preStatement.setString(2, contact.getLastName());
             preStatement.setString(3, contact.getEmail());
@@ -44,7 +45,7 @@ public class ContactDao implements IServices<Contact> {
     public void remove(String email) {
         try {
             statement = connect.createStatement();
-            statement.executeUpdate("DELETE FROM contacts WHERE email='" + email + "'");
+            statement.executeUpdate("DELETE FROM "+tableName+" WHERE email='" + email + "'");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -54,7 +55,7 @@ public class ContactDao implements IServices<Contact> {
     public Vector<Contact> getAll() {
         Vector<Contact> contacts = new Vector<>();
         try {
-            resultSet = statement.executeQuery("SELECT * FROM contacts");
+            resultSet = statement.executeQuery("SELECT * FROM " + tableName);
             while (resultSet.next()) {
                 Contact contact = new Contact();
                 contact.setFirstName(resultSet.getString("first_name"));
@@ -75,7 +76,7 @@ public class ContactDao implements IServices<Contact> {
     public Optional<Contact> find(String email) {
         Contact contact = new Contact();
         try {
-            resultSet = statement.executeQuery("SELECT * FROM contacts WHERE email='"+email+"'");
+            resultSet = statement.executeQuery("SELECT * FROM "+tableName+" WHERE email='"+email+"'");
             if(resultSet.next()) {
                 contact.setFirstName(resultSet.getString("first_name"));
                 contact.setLastName(resultSet.getString("last_name"));
@@ -91,8 +92,7 @@ public class ContactDao implements IServices<Contact> {
 
     @Override
     public void update(Contact contact, String email) {
-        System.out.println(contact);
-        String updateQuery = "UPDATE contacts SET first_name=?, last_name=?, phone=?, email=?, image_url=? WHERE email=?";
+        String updateQuery = "UPDATE "+tableName+" SET first_name=?, last_name=?, phone=?, email=?, image_url=? WHERE email=?";
         try {
             preStatement = connect.prepareStatement(updateQuery);
             preStatement.setString(1, contact.getFirstName());

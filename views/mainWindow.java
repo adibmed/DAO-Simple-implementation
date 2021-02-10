@@ -8,8 +8,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.io.IOException;
-import java.util.Random;
-import java.util.Scanner;
 import java.util.Vector;
 
 public class mainWindow extends JFrame {
@@ -147,31 +145,30 @@ public class mainWindow extends JFrame {
             } catch (IOException ioException) {
                 System.out.println("Image not found!");
             }
-            System.out.println(addOpen);
 
             if(addOpen == false) {
-                System.out.println(fullNameField.getText());
-                System.out.println(emailField.getText());
-                System.out.println(phoneField.getText());
-                if (fullNameField.getText().length() == 0 || emailField.getText().length() == 0 || phoneField.getText().length() == 0 || fullNameField.getText().split(" ").length == 1)
+                if (fullNameField.getText().length() == 0 ||
+                        emailField.getText().length() == 0 ||
+                        phoneField.getText().length() == 0 ||
+                        fullNameField.getText().split(" ").length == 1)
                     JOptionPane.showMessageDialog(null, "Please enter valid fields infos!", "Invalid data", JOptionPane.ERROR_MESSAGE);
+
                 else {
                     Contact contact = new Contact();
                     contact.setFirstName(fullNameField.getText().split(" ")[0]);
                     contact.setLastName(fullNameField.getText().split(" ")[1]);
                     contact.setEmail(emailField.getText());
                     contact.setPhone(phoneField.getText());
-                    contact.setImageUrl("image_" + new Random().nextInt(10) + ".jpg");
+                    int random = (int)(Math.random() * 10 + 1);
+                    contact.setImageUrl("image_" + random + ".jpg");
                     contactDao.add(contact);
                     swipe(currentContactIndex);
                     JOptionPane.showMessageDialog(null, "Contact added successfully", "Success" , JOptionPane.INFORMATION_MESSAGE);
                     contacts = contactDao.getAll();
                 }
             }
-
-
-
         });
+
         editBtn.addActionListener(e -> {
             editOpen = !editOpen;
             if (editOpen)
